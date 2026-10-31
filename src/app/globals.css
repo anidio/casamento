@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/*
+ * Tema base da plataforma. Cada casamento pode sobrescrever --rose, --gold e
+ * --sage via style inline (ver WeddingTheme), então os componentes usam só
+ * estes tokens, nunca cores fixas.
+ */
+:root {
+  --ivory: #fbf7f1;
+  --paper: #f5ede2;
+  --ink: #3d2f2a;
+  --ink-soft: #6f5e57;
+  --rose: #c48a8a;
+  --rose-deep: #9c5d62;
+  --gold: #b8955a;
+  --sage: #8fa38a;
+}
+
+@theme inline {
+  --color-ivory: var(--ivory);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rose: var(--rose);
+  --color-rose-deep: var(--rose-deep);
+  --color-gold: var(--gold);
+  --color-sage: var(--sage);
+  --font-script: "Great Vibes", cursive;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Jost", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* Fundo de papel: manchas suaves de cor + grão leve */
+.paper-bg {
+  background-color: var(--ivory);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 10% 0%, color-mix(in srgb, var(--rose) 18%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 95% 20%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 70%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, color-mix(in srgb, var(--sage) 14%, transparent), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+.gold-text {
+  background: linear-gradient(100deg, var(--gold), color-mix(in srgb, var(--gold) 55%, white), var(--gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .gold-text {
+    animation: none;
+  }
+}

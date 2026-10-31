@@ -1,0 +1,1 @@
+ALTER TABLE "weddings" ADD COLUMN "pix_key_type" text;

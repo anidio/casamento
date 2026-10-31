@@ -1,0 +1,1 @@
+ALTER TABLE "weddings" ADD COLUMN "moderate_messages" boolean DEFAULT false NOT NULL;
