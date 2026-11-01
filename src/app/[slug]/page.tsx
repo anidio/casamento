@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DemoFloatingCta, DemoTopBar } from "@/components/wedding/DemoBar";
 import { FallingPetals } from "@/components/wedding/FallingPetals";
 import { GiftGrid } from "@/components/wedding/Gifts";
 import { InvitationEnvelope } from "@/components/wedding/InvitationEnvelope";
 import { Guestbook } from "@/components/wedding/Guestbook";
 import { RsvpForm } from "@/components/wedding/Rsvp";
 import { Events, Footer, formatWeddingDate, Hero, Nav, SectionTitle, Story, visibleSections } from "@/components/wedding/Sections";
+import { demoWedding } from "@/lib/demo";
 import { getGifts, getMessages, getWeddingBySlug } from "@/lib/weddings";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -31,6 +33,7 @@ export default async function WeddingPage({ params }: Params) {
   const found = await getWeddingBySlug((await params).slug);
   if (!found) notFound();
   const { wedding, preview } = found;
+  const isDemo = wedding.slug === demoWedding.slug;
   const [gifts, messages] = await Promise.all([getGifts(wedding.id), getMessages(wedding.id)]);
   const sections = visibleSections(wedding, gifts.length);
   const firstSection = sections.story ? "#historia" : sections.events ? "#cerimonia" : sections.gifts ? "#presentes" : "#rsvp";
@@ -53,6 +56,7 @@ export default async function WeddingPage({ params }: Params) {
 
   return (
     <div style={themeVars} className="paper-bg min-h-svh">
+      {isDemo && <DemoTopBar />}
       {preview && (
         <div className="relative z-[45] flex flex-wrap items-center justify-center gap-x-4 gap-y-1 bg-ink px-4 py-2 text-center text-sm text-ivory">
           <span>👀 Prévia: só vocês estão vendo. O site ainda não foi publicado.</span>
@@ -93,6 +97,7 @@ export default async function WeddingPage({ params }: Params) {
         </section>
       </main>
       <Footer wedding={wedding} />
+      {isDemo && <DemoFloatingCta />}
     </div>
   );
 }
